@@ -68,6 +68,16 @@ function ImageModal({ image, onClose }) {
 
             {/* Image container */}
             <div className="relative flex items-center justify-center bg-slate-950 min-h-[300px]">
+              {/* Loading skeleton - only shown when image not loaded */}
+              {!isImageLoaded && (
+                <div className="absolute inset-0 flex items-center justify-center bg-slate-950 z-10">
+                  <div className="relative">
+                    <div className="w-12 h-12 border-3 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+                    <div className="absolute inset-0 w-12 h-12 border-3 border-purple-500/30 border-b-purple-500 rounded-full animate-spin" style={{ animationDirection: 'reverse' }} />
+                  </div>
+                </div>
+              )}
+
               {image?.b64_json && (
                 <img
                   src={`data:image/png;base64,${image.b64_json}`}
@@ -77,16 +87,6 @@ function ImageModal({ image, onClose }) {
                   }`}
                   onLoad={() => setIsImageLoaded(true)}
                 />
-              )}
-
-              {/* Loading skeleton - only shown when image not loaded */}
-              {!isImageLoaded && (
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-950">
-                  <div className="relative">
-                    <div className="w-12 h-12 border-3 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
-                    <div className="absolute inset-0 w-12 h-12 border-3 border-purple-500/30 border-b-purple-500 rounded-full animate-spin" style={{ animationDirection: 'reverse' }} />
-                  </div>
-                </div>
               )}
             </div>
 
