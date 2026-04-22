@@ -32,7 +32,7 @@ function ImageCard({ image, onClick }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
-      className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer bg-slate-900/50 border border-slate-800/50 shadow-xl"
+      className="group relative aspect-square rounded-2xl overflow-hidden cursor-pointer bg-zinc-900/50 border border-zinc-800/50 shadow-xl"
     >
       {/* Image */}
       {image.b64_json && (
@@ -48,7 +48,7 @@ function ImageCard({ image, onClick }) {
 
       {/* Loading skeleton */}
       {!isLoaded && (
-        <div className="absolute inset-0 bg-slate-800 animate-pulse" />
+        <div className="absolute inset-0 bg-zinc-800 animate-pulse" />
       )}
 
       {/* Hover overlay with gradient */}
@@ -56,13 +56,13 @@ function ImageCard({ image, onClick }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.2 }}
-        className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/50 to-transparent flex items-center justify-center gap-3"
+        className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/50 to-transparent flex items-center justify-center gap-3"
       >
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleDownload}
-          className="p-3 rounded-full bg-indigo-600/90 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-500/30 transition-all"
+          className="p-3 rounded-full bg-violet-600/90 hover:bg-violet-500 text-white shadow-lg shadow-violet-500/30 transition-all"
           title="Download"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -74,7 +74,7 @@ function ImageCard({ image, onClick }) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleCopy}
-          className="p-3 rounded-full bg-slate-700/90 hover:bg-slate-600 text-slate-200 shadow-lg transition-all"
+          className="p-3 rounded-full bg-zinc-700/90 hover:bg-zinc-600 text-zinc-200 shadow-lg transition-all"
           title={copiedText ? 'Copied!' : 'Copy'}
         >
           {copiedText ? (
@@ -90,8 +90,8 @@ function ImageCard({ image, onClick }) {
       </motion.div>
 
       {/* Timestamp - always visible but subtle */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-slate-950/90 to-transparent">
-        <p className="text-xs text-slate-400 font-medium">
+      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-zinc-950/90 to-transparent">
+        <p className="text-xs text-zinc-400 font-medium">
           {new Date(image.timestamp).toLocaleTimeString()}
         </p>
       </div>

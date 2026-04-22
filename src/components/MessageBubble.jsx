@@ -25,7 +25,7 @@ function MessageBubble({ message, onRegenerate }) {
     >
       <div className={`max-w-[85%] ${isUser ? 'items-end' : 'items-start'} flex flex-col gap-1.5`}>
         {message.imageUrl && (
-          <div className="rounded-xl overflow-hidden border border-slate-700">
+          <div className="rounded-xl overflow-hidden border border-zinc-700">
             <img src={message.imageUrl} alt="Uploaded" className="max-w-xs rounded-xl" />
           </div>
         )}
@@ -33,10 +33,10 @@ function MessageBubble({ message, onRegenerate }) {
         <div
           className={`px-4 py-3 text-[15px] leading-relaxed ${
             isUser
-              ? 'bg-indigo-600 text-white rounded-2xl rounded-br-sm'
+              ? 'bg-violet-600 text-white rounded-2xl rounded-br-sm'
               : isError
                 ? 'bg-red-950/50 border border-red-900 text-red-300 rounded-2xl rounded-bl-sm'
-                : 'bg-slate-800 border border-slate-700 text-slate-200 rounded-2xl rounded-bl-sm'
+                : 'bg-zinc-800 border border-zinc-700 text-zinc-200 rounded-2xl rounded-bl-sm'
           }`}
         >
           {typeof message.content === 'string' ? (
@@ -55,7 +55,7 @@ function MessageBubble({ message, onRegenerate }) {
                           </div>
                           <button
                             onClick={handleCopy}
-                            className="text-xs text-slate-400 hover:text-slate-200 transition-colors"
+                            className="text-xs text-zinc-400 hover:text-zinc-200 transition-colors"
                           >
                             {copiedText ? 'Copied!' : 'Copy'}
                           </button>
@@ -70,7 +70,7 @@ function MessageBubble({ message, onRegenerate }) {
                         </SyntaxHighlighter>
                       </div>
                     ) : (
-                      <code className="bg-slate-700 px-1.5 py-0.5 rounded text-sm text-slate-200" {...props}>
+                      <code className="bg-zinc-700 px-1.5 py-0.5 rounded text-sm text-zinc-200" {...props}>
                         {children}
                       </code>
                     )
@@ -81,18 +81,18 @@ function MessageBubble({ message, onRegenerate }) {
               </ReactMarkdown>
             </div>
           ) : (
-            <p className="text-slate-300">{message.content?.[0]?.text}</p>
+            <p className="text-zinc-300">{message.content?.[0]?.text}</p>
           )}
         </div>
 
         <div className="flex items-center gap-2 px-1">
-          <span className="text-xs text-slate-500">
+          <span className="text-xs text-zinc-500">
             {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </span>
           {!isUser && (
             <button
               onClick={handleCopy}
-              className="p-1 rounded text-slate-500 hover:text-slate-300 transition-colors"
+              className="p-1 rounded text-zinc-500 hover:text-zinc-300 transition-colors"
               title="Copy"
             >
               {copiedText ? (

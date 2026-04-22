@@ -82,7 +82,7 @@ function ChatInterface({
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300, delay: 0.1 }}
-              className="w-24 h-24 mb-8 rounded-3xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center shadow-2xl shadow-indigo-500/30"
+              className="w-24 h-24 mb-8 rounded-3xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center shadow-2xl shadow-violet-500/30"
             >
               <svg className="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 21.75l-.394-1.183a2.25 2.25 0 00-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 001.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 001.423 1.423l1.183.394-1.183.394a2.25 2.25 0 00-1.423 1.423z" />
@@ -92,7 +92,7 @@ function ChatInterface({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-3xl font-bold bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent mb-3"
+              className="text-3xl font-bold bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent mb-3"
             >
               Welcome to Rimagen
             </motion.h2>
@@ -100,7 +100,7 @@ function ChatInterface({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="text-slate-400 text-base max-w-sm leading-relaxed"
+              className="text-zinc-400 text-base max-w-sm leading-relaxed"
             >
               Chat with AI or generate stunning images. Type a message or upload an image to get started.
             </motion.p>
@@ -139,7 +139,7 @@ function ChatInterface({
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
             className="flex justify-start max-w-3xl mx-auto"
           >
-            <div className="bg-slate-900/50 backdrop-blur-sm rounded-2xl rounded-tl-sm px-5 py-4 border border-slate-800/50 shadow-lg">
+            <div className="bg-zinc-900/50 backdrop-blur-sm rounded-2xl rounded-tl-sm px-5 py-4 border border-zinc-800/50 shadow-lg">
               <TypingIndicator />
             </div>
           </motion.div>
@@ -148,7 +148,7 @@ function ChatInterface({
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-4 md:p-5 border-t border-slate-800/50 bg-slate-950/50 backdrop-blur-sm">
+      <div className="p-4 md:p-5 border-t border-zinc-800/50 bg-zinc-950/50 backdrop-blur-sm">
         {selectedImage && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -165,7 +165,7 @@ function ChatInterface({
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setSelectedImage(null)}
-              className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors"
+              className="p-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 transition-colors"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -175,13 +175,13 @@ function ChatInterface({
         )}
 
         <form onSubmit={handleSubmit} className="max-w-3xl mx-auto">
-          <div className="flex items-end gap-2 bg-slate-900/50 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-2 focus-within:border-indigo-500/50 focus-within:ring-2 focus-within:ring-indigo-500/10 transition-all shadow-lg">
+          <div className="flex items-end gap-2 bg-zinc-900/50 backdrop-blur-sm border border-zinc-800/50 rounded-2xl p-2 focus-within:border-violet-500/50 focus-within:ring-2 focus-within:ring-violet-500/10 transition-all shadow-lg">
             <motion.button
               type="button"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => fileInputRef.current?.click()}
-              className="p-2.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-colors flex-shrink-0"
+              className="p-2.5 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50 transition-colors flex-shrink-0"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 6v12a2.25 2.25 0 0 0 2.25 2.25Zm9-7.5 1.5 1.5 3-3" />
@@ -198,7 +198,7 @@ function ChatInterface({
               onKeyDown={handleKeyDown}
               onPaste={handlePaste}
               placeholder="Message Rimagen..."
-              className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 resize-none outline-none max-h-48 min-h-[28px] py-3 text-[15px] leading-relaxed"
+              className="flex-1 bg-transparent text-zinc-100 placeholder-zinc-500 resize-none outline-none max-h-48 min-h-[28px] py-3 text-[15px] leading-relaxed"
               rows={1}
               disabled={isGenerating}
             />
@@ -208,7 +208,7 @@ function ChatInterface({
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               disabled={(!input.trim() && !selectedImage) || isGenerating}
-              className="p-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white disabled:opacity-40 disabled:cursor-not-allowed hover:from-indigo-500 hover:to-purple-500 transition-all flex-shrink-0 shadow-lg shadow-indigo-500/25"
+              className="p-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white disabled:opacity-40 disabled:cursor-not-allowed hover:from-violet-500 hover:to-fuchsia-500 transition-all flex-shrink-0 shadow-lg shadow-violet-500/25"
             >
               {isGenerating ? (
                 <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -223,7 +223,7 @@ function ChatInterface({
               )}
             </motion.button>
           </div>
-          <p className="text-center text-xs text-slate-600 mt-2">Shift + Enter for new line</p>
+          <p className="text-center text-xs text-zinc-600 mt-2">Shift + Enter for new line</p>
         </form>
 
         <input
