@@ -103,7 +103,7 @@ function App() {
         : content
 
       const data = await makeApiRequest('/v1/chat/completions', {
-        model: 'gemini-1.5-flash-002',
+        model: 'gemini-2.5-flash',
         messages: [...recentMessages, { role: 'user', content: userPayload }],
         stream: false
       })
