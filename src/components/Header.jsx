@@ -1,4 +1,4 @@
-function Header({ onToggleSidebar }) {
+function Header({ onToggleSidebar, chatModel, onChatModelChange }) {
   return (
     <header className="h-14 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-4 lg:px-6">
       <div className="flex items-center gap-3">
@@ -13,7 +13,15 @@ function Header({ onToggleSidebar }) {
         <h1 className="text-sm font-semibold text-slate-300">Rimagen</h1>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
+        <select
+          value={chatModel}
+          onChange={(e) => onChatModelChange(e.target.value)}
+          className="text-xs bg-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer"
+        >
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash</option>
+          <option value="gemini-2.5-pro">Gemini 2.5 Pro</option>
+        </select>
         <span className="text-xs text-slate-500 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">
           Vertex AI
         </span>

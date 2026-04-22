@@ -66,6 +66,7 @@ function App() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedImages, setGeneratedImages] = useState([])
   const [imageError, setImageError] = useState(null)
+  const [chatModel, setChatModel] = useState('gemini-2.5-flash')
   const messagesEndRef = useRef(null)
 
   const scrollToBottom = useCallback(() => {
@@ -103,7 +104,7 @@ function App() {
         : content
 
       const data = await makeApiRequest('/v1/chat/completions', {
-        model: 'gemini-2.5-flash',
+        model: chatModel,
         messages: [...recentMessages, { role: 'user', content: userPayload }],
         stream: false
       })
@@ -127,7 +128,7 @@ function App() {
     } finally {
       setIsGenerating(false)
     }
-  }, [messages])
+  }, [messages, chatModel])
 
   const handleGenerateImage = useCallback(async (prompt, count = 1) => {
     setIsGenerating(true)
@@ -168,6 +169,8 @@ function App() {
       <div className="flex-1 flex flex-col min-h-screen">
         <Header
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+          chatModel={chatModel}
+          onChatModelChange={setChatModel}
         />
 
         <main className="flex-1 overflow-hidden">
