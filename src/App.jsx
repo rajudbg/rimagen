@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Toast from './components/Toast'
 import { useToast } from './hooks/useToast'
+import { useMediaQuery } from './hooks/useTheme'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 const API_KEY = import.meta.env.VITE_API_KEY || 'raju123'
@@ -63,8 +64,9 @@ async function makeApiRequest(path, body) {
 
 function App() {
   const { toasts, addToast } = useToast()
+  const isDesktop = useMediaQuery('(min-width: 1024px)')
   const [activeTab, setActiveTab] = useState('chat')
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [messages, setMessages] = useState([])
   const [isChatLoading, setIsChatLoading] = useState(false)
   const [generatedImages, setGeneratedImages] = useState([])
@@ -72,6 +74,11 @@ function App() {
   const [isImageLoading, setIsImageLoading] = useState(false)
   const [chatModel, setChatModel] = useState('gemini-2.5-flash')
   const messagesEndRef = useRef(null)
+
+  // Sync sidebar state with screen size
+  useEffect(() => {
+    setIsSidebarOpen(isDesktop)
+  }, [isDesktop])
 
   const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
