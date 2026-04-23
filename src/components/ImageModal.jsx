@@ -12,7 +12,7 @@ function ImageModal({ image, onClose }) {
 
     const link = document.createElement('a')
     link.href = `data:image/png;base64,${image.b64_json}`
-    link.download = `rimagen-${image.id}.png`
+    link.download = `reimagen-${image.id}.png`
     link.click()
   }, [image?.b64_json, image?.id])
 
@@ -116,7 +116,7 @@ function ImageModal({ image, onClose }) {
                 <div className="flex items-center gap-3">
                   <button
                     onClick={handleCopy}
-                    className="px-4 py-2.5 rounded-xl bg-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-700 transition-all flex items-center gap-2 text-sm font-medium border border-zinc-700/50"
+                    className="px-4 py-2.5 rounded-xl bg-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-700 transition-all flex items-center gap-2 text-sm font-medium border border-zinc-700/50 shadow-lg"
                   >
                     {copiedText ? (
                       <>

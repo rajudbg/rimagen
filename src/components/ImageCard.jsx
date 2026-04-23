@@ -13,7 +13,7 @@ function ImageCard({ image, onClick }) {
 
     const link = document.createElement('a')
     link.href = `data:image/png;base64,${image.b64_json}`
-    link.download = `rimagen-${image.id}.png`
+    link.download = `reimagen-${image.id}.png`
     link.click()
   }, [image.b64_json, image.id])
 
@@ -56,13 +56,13 @@ function ImageCard({ image, onClick }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: isHovered ? 1 : 0 }}
         transition={{ duration: 0.2 }}
-        className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/50 to-transparent flex items-center justify-center gap-3"
+        className="absolute inset-0 bg-gradient-to-t from-zinc-950/95 via-zinc-950/60 to-transparent flex items-center justify-center gap-3"
       >
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleDownload}
-          className="p-3 rounded-full bg-violet-600/90 hover:bg-violet-500 text-white shadow-lg shadow-violet-500/30 transition-all"
+          className="p-3.5 rounded-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white shadow-xl shadow-violet-500/30 transition-all border border-violet-500/30"
           title="Download"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -74,7 +74,7 @@ function ImageCard({ image, onClick }) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={handleCopy}
-          className="p-3 rounded-full bg-zinc-700/90 hover:bg-zinc-600 text-zinc-200 shadow-lg transition-all"
+          className="p-3.5 rounded-full bg-zinc-800/90 hover:bg-zinc-700 text-zinc-200 shadow-xl transition-all border border-zinc-700/50"
           title={copiedText ? 'Copied!' : 'Copy'}
         >
           {copiedText ? (

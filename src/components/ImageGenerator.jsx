@@ -59,10 +59,10 @@ function ImageGenerator({
             className="text-center"
           >
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-violet-400 via-fuchsia-400 to-pink-400 bg-clip-text text-transparent mb-3">
-              AI Image Generator
+              Reimagen by Rajendra
             </h1>
             <p className="text-zinc-400 text-lg">
-              Transform your ideas into stunning visuals
+              Powered by BolderBrain AI. Transform your ideas into stunning visuals
             </p>
           </motion.div>
 
@@ -87,9 +87,9 @@ function ImageGenerator({
                 </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     <span className="text-sm text-zinc-400 font-medium">Count:</span>
-                    <div className="flex items-center gap-1.5 bg-zinc-950/50 rounded-xl p-1.5 border border-zinc-800/50">
+                    <div className="flex items-center gap-1 bg-zinc-950/50 rounded-xl p-1 border border-zinc-800/50">
                       {[1, 2, 3, 4].map((count) => (
                         <motion.button
                           key={count}
@@ -98,7 +98,7 @@ function ImageGenerator({
                           disabled={isGenerating}
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
-                          className={`w-9 h-9 rounded-lg text-sm font-semibold transition-all ${
+                          className={`w-10 h-10 rounded-lg text-sm font-semibold transition-all ${
                             imageCount === count
                               ? 'bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white shadow-lg shadow-violet-500/25'
                               : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800'
@@ -115,7 +115,7 @@ function ImageGenerator({
                     disabled={!prompt.trim() || isGenerating}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:from-violet-500 hover:to-fuchsia-500 transition-all flex items-center gap-2.5 shadow-lg shadow-violet-500/25"
+                    className="px-6 py-3 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:from-violet-500 hover:to-fuchsia-500 transition-all flex items-center gap-2.5 shadow-lg shadow-violet-500/25"
                   >
                     {isGenerating ? (
                       <>
@@ -243,43 +243,39 @@ function ImageGenerator({
           {/* Empty State */}
           {!isGenerating && images.length === 0 && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              className="flex flex-col items-center justify-center py-24 text-center"
+              className="flex flex-col items-center justify-center py-16 text-center"
             >
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ type: 'spring', damping: 25, stiffness: 300, delay: 0.2 }}
-                className="w-24 h-24 mb-6 rounded-3xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 border border-zinc-800/50 flex items-center justify-center"
+                transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+                className="w-28 h-28 rounded-3xl bg-gradient-to-br from-violet-500 to-fuchsia-500 flex items-center justify-center mb-6 shadow-2xl shadow-violet-500/25"
               >
-                <svg className="w-12 h-12 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <svg className="w-14 h-14 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 6v12a2.25 2.25 0 0 0 2.25 2.25Zm9-7.5 1.5 1.5 3-3" />
                 </svg>
               </motion.div>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-zinc-400 text-base max-w-sm"
-              >
-                Describe the image you want and click Generate to create AI artwork
-              </motion.p>
+              <h2 className="text-2xl font-bold text-zinc-100 mb-2">Reimagen by Rajendra</h2>
+              <p className="text-zinc-400 max-w-sm">
+                Powered by BolderBrain AI. Describe your vision and watch it come to life.
+              </p>
             </motion.div>
           )}
+
+          {/* Image Modal */}
+          <AnimatePresence>
+            {selectedImage && (
+              <ImageModal
+                image={selectedImage}
+                onClose={() => setSelectedImage(null)}
+              />
+            )}
+          </AnimatePresence>
         </div>
       </div>
-
-      {/* Image Modal */}
-      <AnimatePresence>
-        {selectedImage && (
-          <ImageModal
-            image={selectedImage}
-            onClose={() => setSelectedImage(null)}
-          />
-        )}
-      </AnimatePresence>
     </div>
   )
 }

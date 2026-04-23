@@ -51,7 +51,7 @@ function Sidebar({ isOpen, onToggle, activeTab, onTabChange }) {
         className="fixed top-0 left-0 h-full w-64 bg-zinc-950 border-r border-zinc-800 z-40 flex flex-col"
       >
         <div className="h-16 flex items-center justify-between px-5 border-b border-zinc-800">
-          <span className="text-lg font-semibold text-zinc-100 tracking-tight">Rimagen</span>
+          <span className="text-lg font-semibold text-zinc-100 tracking-tight">Reimagen by Rajendra</span>
           <button
             onClick={onToggle}
             className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
