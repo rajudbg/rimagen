@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const navItems = [
   {
@@ -23,46 +22,65 @@ const navItems = [
 ]
 
 function Sidebar({ isOpen, onToggle, activeTab, onTabChange }) {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-
-  const toggle = () => {
-    setIsCollapsed(!isCollapsed)
+  const handleNavClick = (id) => {
+    onTabChange(id)
     onToggle()
   }
 
   return (
-    <motion.aside
-      initial={{ x: -260 }}
-      animate={{ x: isCollapsed ? -260 : 0 }}
-      transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-      className="fixed top-0 left-0 h-full w-64 bg-zinc-950 border-r border-zinc-800 z-40"
-    >
-      <div className="h-16 flex items-center justify-between px-5 border-b border-zinc-800">
-        <span className="text-lg font-semibold text-zinc-100 tracking-tight">Rimagen</span>
-      </div>
+    <>
+      {/* Overlay backdrop on mobile/tablet */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 lg:hidden"
+            onClick={onToggle}
+          />
+        )}
+      </AnimatePresence>
 
-      <nav className="flex-1 overflow-y-auto py-4">
-        {navItems.map((item) => (
+      {/* Sidebar */}
+      <motion.aside
+        initial={{ x: -260 }}
+        animate={{ x: isOpen ? 0 : -260 }}
+        transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+        className="fixed top-0 left-0 h-full w-64 bg-zinc-950 border-r border-zinc-800 z-40 flex flex-col"
+      >
+        <div className="h-16 flex items-center justify-between px-5 border-b border-zinc-800">
+          <span className="text-lg font-semibold text-zinc-100 tracking-tight">Rimagen</span>
           <button
-            key={item.id}
-            onClick={() => {
-              onTabChange(item.id)
-              if (window.innerWidth < 768) onToggle()
-            }}
-            className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-all ${
-              activeTab === item.id
-                ? 'bg-zinc-800 text-zinc-100 border-r-2 border-violet-500'
-                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
-            }`}
+            onClick={onToggle}
+            className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
+            aria-label="Close sidebar"
           >
-            <div className="flex-shrink-0">{item.icon}</div>
-            {!isCollapsed && <span>{item.label}</span>}
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
-        ))}
-      </nav>
+        </div>
 
-      <div className={`hidden lg:block transition-all duration-200 ${isCollapsed ? 'w-16' : 'w-60'}`} />
-    </motion.aside>
+        <nav className="flex-1 overflow-y-auto py-4">
+          {navItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className={`w-full flex items-center gap-3 px-5 py-3 text-left transition-all ${
+                activeTab === item.id
+                  ? 'bg-zinc-800 text-zinc-100 border-r-2 border-violet-500'
+                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
+              }`}
+            >
+              <div className="flex-shrink-0">{item.icon}</div>
+              <span>{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </motion.aside>
+    </>
   )
 }
 

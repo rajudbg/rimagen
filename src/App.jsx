@@ -61,7 +61,7 @@ async function makeApiRequest(path, body) {
 
 function App() {
   const [activeTab, setActiveTab] = useState('chat')
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [messages, setMessages] = useState([])
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedImages, setGeneratedImages] = useState([])
