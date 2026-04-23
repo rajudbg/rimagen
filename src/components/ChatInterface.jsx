@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import MessageBubble from './MessageBubble'
 import TypingIndicator from './TypingIndicator'
@@ -8,10 +8,12 @@ function ChatInterface({
   messages,
   onSendMessage,
   isGenerating,
-  messagesEndRef
+  messagesEndRef,
+  addToast
 }) {
   const [input, setInput] = useState('')
   const [selectedImage, setSelectedImage] = useState(null)
+  const [isDragOver, setIsDragOver] = useState(false)
   const fileInputRef = useRef(null)
   const textareaRef = useRef(null)
 
@@ -36,14 +38,41 @@ function ChatInterface({
     }
   }, [handleSubmit])
 
-  const handleFileSelect = useCallback((e) => {
-    const file = e.target.files?.[0]
+  const loadImage = useCallback((file) => {
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader()
-      reader.onload = (e) => setSelectedImage(e.target.result)
+      reader.onload = (e) => {
+        setSelectedImage(e.target.result)
+        addToast?.('Image attached', 'success', 2000)
+      }
       reader.readAsDataURL(file)
     }
+  }, [addToast])
+
+  const handleFileSelect = useCallback((e) => {
+    const file = e.target.files?.[0]
+    loadImage(file)
+  }, [loadImage])
+
+  const handleDragOver = useCallback((e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(true)
   }, [])
+
+  const handleDragLeave = useCallback((e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(false)
+  }, [])
+
+  const handleDrop = useCallback((e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsDragOver(false)
+    const file = e.dataTransfer?.files?.[0]
+    loadImage(file)
+  }, [loadImage])
 
   const handlePaste = useCallback((e) => {
     const items = e.clipboardData?.items
@@ -51,13 +80,25 @@ function ChatInterface({
       for (const item of items) {
         if (item.type.startsWith('image/')) {
           const file = item.getAsFile()
-          const reader = new FileReader()
-          reader.onload = (e) => setSelectedImage(e.target.result)
-          reader.readAsDataURL(file)
+          loadImage(file)
           break
         }
       }
     }
+  }, [loadImage])
+
+  // Keyboard shortcut: / to focus input
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const target = e.target
+        if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) return
+        e.preventDefault()
+        textareaRef.current?.focus()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
 
   const adjustTextareaHeight = useCallback(() => {
@@ -69,7 +110,28 @@ function ChatInterface({
   }, [])
 
   return (
-    <div className="h-full flex flex-col">
+    <div
+      className="h-full flex flex-col relative"
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      {isDragOver && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="absolute inset-0 z-30 bg-violet-500/10 backdrop-blur-sm border-2 border-dashed border-violet-500/50 rounded-none flex items-center justify-center"
+        >
+          <div className="text-center">
+            <svg className="w-12 h-12 text-violet-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 6v12a2.25 2.25 0 0 0 2.25 2.25Zm9-7.5 1.5 1.5 3-3" />
+            </svg>
+            <p className="text-violet-300 font-medium">Drop image here</p>
+          </div>
+        </motion.div>
+      )}
+
       <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6">
         {messages.length === 0 ? (
           <motion.div

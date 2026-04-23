@@ -5,6 +5,18 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { useCopyToClipboard } from '../hooks/useTheme'
 
+function formatRelativeTime(timestamp) {
+  const date = new Date(timestamp)
+  const now = new Date()
+  const diff = Math.floor((now - date) / 1000)
+
+  if (diff < 60) return 'Just now'
+  if (diff < 3600) return `${Math.floor(diff / 60)}m ago`
+  if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`
+  if (diff < 604800) return `${Math.floor(diff / 86400)}d ago`
+  return date.toLocaleDateString([], { month: 'short', day: 'numeric' })
+}
+
 function MessageBubble({ message, onRegenerate }) {
   const [copiedText, copy] = useCopyToClipboard()
   const isUser = message.role === 'user'
@@ -86,8 +98,8 @@ function MessageBubble({ message, onRegenerate }) {
         </div>
 
         <div className="flex items-center gap-2 px-1">
-          <span className="text-xs text-zinc-500">
-            {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          <span className="text-xs text-zinc-500" title={new Date(message.timestamp).toLocaleString()}>
+            {formatRelativeTime(message.timestamp)}
           </span>
           {!isUser && (
             <button

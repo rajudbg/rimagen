@@ -102,32 +102,38 @@ function ImageModal({ image, onClose }) {
             </div>
 
             {/* Actions */}
-            <div className="p-5 flex items-center justify-between border-t border-zinc-800/50 bg-zinc-900/50 backdrop-blur-sm">
-              <span className="text-xs text-zinc-500 font-medium">
-                {new Date(image?.timestamp).toLocaleString()}
-              </span>
+            <div className="p-5 border-t border-zinc-800/50 bg-zinc-900/50 backdrop-blur-sm space-y-2">
+              {image?.prompt && (
+                <p className="text-xs text-zinc-400 line-clamp-2">
+                  <span className="text-zinc-500">Prompt:</span> {image.prompt}
+                </p>
+              )}
+              <div className="flex items-center justify-between">
+                <span className="text-xs text-zinc-500 font-medium">
+                  {new Date(image?.timestamp).toLocaleString()}
+                </span>
 
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={handleCopy}
-                  className="px-4 py-2.5 rounded-xl bg-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-700 transition-all flex items-center gap-2 text-sm font-medium border border-zinc-700/50"
-                >
-                  {copiedText ? (
-                    <>
-                      <svg className="w-4 h-4 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                      </svg>
-                      <span>Copied!</span>
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5" />
-                      </svg>
-                      <span>Copy</span>
-                    </>
-                  )}
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={handleCopy}
+                    className="px-4 py-2.5 rounded-xl bg-zinc-800 text-zinc-300 hover:text-zinc-100 hover:bg-zinc-700 transition-all flex items-center gap-2 text-sm font-medium border border-zinc-700/50"
+                  >
+                    {copiedText ? (
+                      <>
+                        <svg className="w-4 h-4 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                        </svg>
+                        <span>Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5" />
+                        </svg>
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
 
                 <button
                   onClick={handleDownload}
@@ -140,6 +146,7 @@ function ImageModal({ image, onClose }) {
                 </button>
               </div>
             </div>
+          </div>
           </motion.div>
         </motion.div>
       )}

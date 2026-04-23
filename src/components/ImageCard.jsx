@@ -89,9 +89,14 @@ function ImageCard({ image, onClick }) {
         </motion.button>
       </motion.div>
 
-      {/* Timestamp - always visible but subtle */}
-      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-zinc-950/90 to-transparent">
-        <p className="text-xs text-zinc-400 font-medium">
+      {/* Timestamp + Prompt metadata */}
+      <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-zinc-950/95 via-zinc-950/70 to-transparent">
+        {image.prompt && (
+          <p className="text-[11px] text-zinc-300 leading-snug mb-1 line-clamp-2 font-medium">
+            {image.prompt}
+          </p>
+        )}
+        <p className="text-[10px] text-zinc-500">
           {new Date(image.timestamp).toLocaleTimeString()}
         </p>
       </div>

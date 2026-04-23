@@ -4,6 +4,8 @@ import ChatInterface from './components/ChatInterface'
 import ImageGenerator from './components/ImageGenerator'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
+import Toast from './components/Toast'
+import { useToast } from './hooks/useToast'
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 const API_KEY = import.meta.env.VITE_API_KEY || 'raju123'
@@ -60,12 +62,14 @@ async function makeApiRequest(path, body) {
 }
 
 function App() {
+  const { toasts, addToast } = useToast()
   const [activeTab, setActiveTab] = useState('chat')
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [messages, setMessages] = useState([])
-  const [isGenerating, setIsGenerating] = useState(false)
+  const [isChatLoading, setIsChatLoading] = useState(false)
   const [generatedImages, setGeneratedImages] = useState([])
   const [imageError, setImageError] = useState(null)
+  const [isImageLoading, setIsImageLoading] = useState(false)
   const [chatModel, setChatModel] = useState('gemini-2.5-flash')
   const messagesEndRef = useRef(null)
 
@@ -77,16 +81,22 @@ function App() {
     scrollToBottom()
   }, [messages, scrollToBottom])
 
+  const messageIdRef = useRef(0)
+  const nextId = () => {
+    messageIdRef.current += 1
+    return `${Date.now()}-${messageIdRef.current}`
+  }
+
   const handleSendMessage = useCallback(async (content, imageUrl = null) => {
     const userMessage = {
-      id: Date.now(),
+      id: nextId(),
       role: 'user',
       content,
       imageUrl,
       timestamp: new Date().toISOString()
     }
     setMessages(prev => [...prev, userMessage])
-    setIsGenerating(true)
+    setIsChatLoading(true)
 
     try {
       const hasImage = !!imageUrl
@@ -110,7 +120,7 @@ function App() {
       })
 
       const assistantMessage = {
-        id: Date.now() + 1,
+        id: nextId(),
         role: 'assistant',
         content: data.choices?.[0]?.message?.content || 'No response from model.',
         timestamp: new Date().toISOString()
@@ -118,20 +128,21 @@ function App() {
       setMessages(prev => [...prev, assistantMessage])
     } catch (error) {
       const errorMessage = {
-        id: Date.now() + 1,
+        id: nextId(),
         role: 'assistant',
         content: `Error: ${error.message}`,
         isError: true,
         timestamp: new Date().toISOString()
       }
       setMessages(prev => [...prev, errorMessage])
+      addToast(error.message, 'error', 5000)
     } finally {
-      setIsGenerating(false)
+      setIsChatLoading(false)
     }
-  }, [messages, chatModel])
+  }, [messages, chatModel, addToast])
 
   const handleGenerateImage = useCallback(async (prompt, count = 1) => {
-    setIsGenerating(true)
+    setIsImageLoading(true)
     setGeneratedImages([])
     setImageError(null)
 
@@ -143,19 +154,22 @@ function App() {
       })
 
       const images = data.data?.map((img, idx) => ({
-        id: Date.now() + idx,
+        id: nextId(),
         b64_json: img.b64_json,
+        prompt,
         timestamp: new Date().toISOString()
       })) || []
 
       setGeneratedImages(images)
+      addToast(`Generated ${images.length} image${images.length > 1 ? 's' : ''}`, 'success')
     } catch (error) {
       console.error('Image generation error:', error)
       setImageError(error.message || 'Failed to generate image')
+      addToast(error.message || 'Image generation failed', 'error', 5000)
     } finally {
-      setIsGenerating(false)
+      setIsImageLoading(false)
     }
-  }, [])
+  }, [addToast])
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100 flex">
@@ -187,8 +201,9 @@ function App() {
                 <ChatInterface
                   messages={messages}
                   onSendMessage={handleSendMessage}
-                  isGenerating={isGenerating}
+                  isGenerating={isChatLoading}
                   messagesEndRef={messagesEndRef}
+                  addToast={addToast}
                 />
               </motion.div>
             ) : (
@@ -202,15 +217,18 @@ function App() {
               >
                 <ImageGenerator
                   onGenerate={handleGenerateImage}
-                  isGenerating={isGenerating}
+                  isGenerating={isImageLoading}
                   images={generatedImages}
                   error={imageError}
+                  addToast={addToast}
                 />
               </motion.div>
             )}
           </AnimatePresence>
         </main>
       </div>
+
+      <Toast toasts={toasts} />
     </div>
   )
 }
