@@ -1,24 +1,25 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useCopyToClipboard } from '../hooks/useTheme'
 
 function ImageModal({ image, onClose }) {
   const [copiedText, copy] = useCopyToClipboard()
   const [isImageLoaded, setIsImageLoaded] = useState(false)
+  const imgRef = useRef(null)
 
   const handleDownload = useCallback(() => {
-    if (!image.b64_json) return
+    if (!image?.b64_json) return
 
     const link = document.createElement('a')
     link.href = `data:image/png;base64,${image.b64_json}`
     link.download = `rimagen-${image.id}.png`
     link.click()
-  }, [image.b64_json, image.id])
+  }, [image?.b64_json, image?.id])
 
   const handleCopy = useCallback(async () => {
-    if (!image.b64_json) return
+    if (!image?.b64_json) return
     await copy(image.b64_json)
-  }, [image.b64_json, copy])
+  }, [image?.b64_json, copy])
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -31,9 +32,18 @@ function ImageModal({ image, onClose }) {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [onClose])
 
+  // Reset loading state when image changes, but check if already cached
   useEffect(() => {
     if (image) {
       setIsImageLoaded(false)
+      // If image is already cached (complete), set loaded immediately
+      // Use a small timeout to ensure the img element has mounted
+      const timer = setTimeout(() => {
+        if (imgRef.current?.complete) {
+          setIsImageLoaded(true)
+        }
+      }, 50)
+      return () => clearTimeout(timer)
     }
   }, [image])
 
@@ -53,7 +63,7 @@ function ImageModal({ image, onClose }) {
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative max-w-[90vw] max-h-[90vh] bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl"
+            className="relative max-w-[90vw] max-h-[90vh] bg-zinc-900 border border-zinc-800 rounded-3xl overflow-auto shadow-2xl flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
@@ -67,7 +77,7 @@ function ImageModal({ image, onClose }) {
             </button>
 
             {/* Image container */}
-            <div className="relative flex items-center justify-center bg-zinc-950 min-h-[300px]">
+            <div className="relative flex items-center justify-center bg-zinc-950 flex-1 min-h-0">
               {/* Loading skeleton - only shown when image not loaded */}
               {!isImageLoaded && (
                 <div className="absolute inset-0 flex items-center justify-center bg-zinc-950 z-10">
@@ -80,9 +90,10 @@ function ImageModal({ image, onClose }) {
 
               {image?.b64_json && (
                 <img
+                  ref={imgRef}
                   src={`data:image/png;base64,${image.b64_json}`}
                   alt="Generated"
-                  className={`max-w-[90vw] max-h-[70vh] object-contain transition-all duration-500 ${
+                  className={`max-w-full max-h-[70vh] object-contain transition-all duration-500 ${
                     isImageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
                   }`}
                   onLoad={() => setIsImageLoaded(true)}
